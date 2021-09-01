@@ -37,48 +37,48 @@ func main() {
 
 }
 
-// func authMidleware(authService middleware.ServiceIn, user database.Repository) echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		authHeader := c.Request().Header.Get("Authorization")
+func authMidleware(authService middleware.ServiceIn, user database.Repository) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		authHeader := c.Request().Header.Get("Authorization")
 
-// 		if !strings.Contains(authHeader, "Bearer") {
-// 			return c.JSON(http.StatusForbidden, map[string]interface{}{
-// 				"message": "not allowed",
-// 			})
-// 		}
+		if !strings.Contains(authHeader, "Bearer") {
+			return c.JSON(http.StatusForbidden, map[string]interface{}{
+				"message": "not allowed",
+			})
+		}
 
-// 		var tokenString string
-// 		arrayToken := strings.Split(authHeader, " ")
-// 		if len(arrayToken) == 2 {
-// 			tokenString = arrayToken[1]
-// 		}
+		var tokenString string
+		arrayToken := strings.Split(authHeader, " ")
+		if len(arrayToken) == 2 {
+			tokenString = arrayToken[1]
+		}
 
-// 		token, err := authService.ValidateToken(tokenString)
-// 		if err != nil {
-// 			return c.JSON(http.StatusForbidden, map[string]interface{}{
-// 				"message": "not allowed",
-// 			})
-// 		}
+		token, err := authService.ValidateToken(tokenString)
+		if err != nil {
+			return c.JSON(http.StatusForbidden, map[string]interface{}{
+				"message": "not allowed",
+			})
+		}
 
-// 		claim, ok := token.Claims.(jwt.MapClaims)
+		claim, ok := token.Claims.(jwt.MapClaims)
 
-// 		if !ok {
-// 			return c.JSON(http.StatusForbidden, map[string]interface{}{
-// 				"message": "not allowed",
-// 			})
-// 		}
+		if !ok {
+			return c.JSON(http.StatusForbidden, map[string]interface{}{
+				"message": "not allowed",
+			})
+		}
 
-// 		userID := int(claim["userID"].(float64))
+		userID := int(claim["userID"].(float64))
 
-// 		user, err := user.GetUser(userID)
-// 		if err != nil {
-// 			return c.JSON(http.StatusForbidden, map[string]interface{}{
-// 				"message": "not allowed",
-// 			})
-// 		}
+		user, err := user.GetUser(userID)
+		if err != nil {
+			return c.JSON(http.StatusForbidden, map[string]interface{}{
+				"message": "not allowed",
+			})
+		}
 
-// 		c.Set("currentUser", user)
-// 		return nil
+		c.Set("currentUser", user)
+		return nil
 
-// 	}
-// }
+	}
+}
